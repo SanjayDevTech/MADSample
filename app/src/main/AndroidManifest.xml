@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sample.mad">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,8 +14,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MADSample">
         <activity
-            android:name=".CanvasActivity"
-            android:exported="true" >
+            android:name=".eigth.AlertMsgActivity"
+            android:exported="false" />
+        <activity
+            android:name=".seventh.ImageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".fifth.DBActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,20 +32,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LayoutManagerActivity"
-            android:exported="true">
-
-        </activity>
+            android:name=".fourth.CanvasActivity"
+            android:exported="true" />
         <activity
-            android:name=".CalActivity"
-            android:exported="true"></activity>
+            android:name=".second.LayoutManagerActivity"
+            android:exported="true" />
+        <activity
+            android:name=".third.CalActivity"
+            android:exported="true" />
         <activity
             android:name=".CalculatorActivity"
             android:exported="true"
             android:label="@string/title_activity_calculator"
             android:theme="@style/Theme.MADSample" />
         <activity
-            android:name=".MainActivity"
+            android:name=".first.MainActivity"
             android:exported="true" />
     </application>
 
