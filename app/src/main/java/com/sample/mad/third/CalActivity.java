@@ -1,17 +1,13 @@
 package com.sample.mad.third;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.sample.mad.R;
 
-/**
- * Third exp
- */
 public class CalActivity extends AppCompatActivity {
     Button button0, button1, button2, button3, button4, button5, button6,
             button7, button8, button9, buttonAdd, buttonSub, buttonDivision,
@@ -28,10 +24,10 @@ public class CalActivity extends AppCompatActivity {
         button0 = findViewById(R.id.button0);
         button1 = findViewById(R.id.button1);
         button2 = findViewById(R.id.button2);
-        button3 = findViewById(R.id.button3);
-        button4 = findViewById(R.id.button4);
+        button3 = findViewById(R.id.updateBtn);
+        button4 = findViewById(R.id.deleteBtn);
         button5 = findViewById(R.id.button5);
-        button6 = findViewById(R.id.button6);
+        button6 = findViewById(R.id.clearBtn);
         button7 = findViewById(R.id.button7);
         button8 = findViewById(R.id.button8);
         button9 = findViewById(R.id.button9);

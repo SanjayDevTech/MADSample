@@ -9,9 +9,6 @@ import android.widget.Toast;
 
 import com.sample.mad.R;
 
-/**
- * Second exp
- */
 public class LayoutManagerActivity extends AppCompatActivity {
     private EditText nameEdit, ageEdit, clgEdit;
     private Button submitBtn;
@@ -23,7 +20,7 @@ public class LayoutManagerActivity extends AppCompatActivity {
         nameEdit = findViewById(R.id.nameEdit);
         ageEdit = findViewById(R.id.ageEdit);
         clgEdit = findViewById(R.id.clgEdit);
-        submitBtn = findViewById(R.id.button);
+        submitBtn = findViewById(R.id.insertBtn);
         submitBtn.setOnClickListener((v) -> {
             String name = nameEdit.getText().toString();
             String age = ageEdit.getText().toString();

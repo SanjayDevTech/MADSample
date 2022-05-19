@@ -8,32 +8,25 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import com.sample.mad.R;
 
 public class AlertMsgActivity extends AppCompatActivity {
-    private Button button;
-
     private final String CHANNEL_NAME = "peace Notification";
     private final String CHANNEL_ID = "give-me-peace";
     private final int NOTIFICATION_ID = 8;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alert_msg);
-        button = findViewById(R.id.button);
+        Button button = findViewById(R.id.insertBtn);
         button.setOnClickListener(v -> {
-
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
                 notificationManager.createNotificationChannel(channel);
             }
-
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_foreground))
@@ -42,11 +35,7 @@ public class AlertMsgActivity extends AppCompatActivity {
                     .setStyle(new NotificationCompat.BigPictureStyle()
                             .bigPicture(BitmapFactory.decodeResource(getResources(), R.drawable.sunset)))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-
-            //notificationId is a unique int for each notification that you must define
             notificationManager.notify(NOTIFICATION_ID, builder.build());
         });
-
     }
 }

@@ -12,9 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sample.mad.R;
 
-/**
- * Fourth exp
- */
 public class CanvasActivity extends AppCompatActivity {
 
     @Override
@@ -27,7 +24,7 @@ public class CanvasActivity extends AppCompatActivity {
         i.setBackgroundDrawable(new BitmapDrawable(bg)); //Creating the Canvas Object
         Canvas canvas = new Canvas(bg);
         Paint paint = new Paint();
-        paint.setColor(Color.BLUE);
+        paint.setColor(getResources().getColor(R.color.teal_700));
         paint.setTextSize(50);
         canvas.drawText("Rectangle", 420, 150, paint);
         canvas.drawRect(400, 200, 650, 700, paint);

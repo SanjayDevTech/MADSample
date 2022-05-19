@@ -1,155 +1,114 @@
 package com.sample.mad.fifth;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.DialogInterface;
-import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.sample.mad.R;
 
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class DBActivity extends AppCompatActivity {
-    private EditText editTextID;
-    private EditText editTextName;
+    private EditText nameEdit;
+    private EditText descEdit;
 
-    private String name;
-    private int number;
-    private String ID;
+    private AppDatabase db;
+    private TopicDAO dao;
 
-    private DBHelper db;
-
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dbactivity);
-        db = new DBHelper(this);  // to call constructor
+        db = AppDatabase.getInstance(this);
+        dao = db.topicDao();
+        nameEdit = findViewById(R.id.nameEdit);
+        descEdit = findViewById(R.id.descEdit);
 
-        editTextID = findViewById(R.id.editText1);
-        editTextName = findViewById(R.id.editText2);
+        Button insertBtn = findViewById(R.id.insertBtn);
+        Button updateBtn = findViewById(R.id.updateBtn);
+        Button deleteBtn = findViewById(R.id.deleteBtn);
+        Button clearBtn = findViewById(R.id.clearBtn);
+        Button readBtn = findViewById(R.id.readBtn);
 
-        Button buttonSave = findViewById(R.id.button);
-        Button buttonRead = findViewById(R.id.button2);
-        Button buttonUpdate = findViewById(R.id.button3);
-        Button buttonDelete = findViewById(R.id.button4);
-        Button buttonSearch = findViewById(R.id.button5);
-        Button buttonDeleteAll = findViewById(R.id.button6);
-
-        buttonSave.setOnClickListener((v)-> {
-
-                name = editTextName.getText().toString();
-
-
-
-                if (name.isEmpty() ) {
-
-                    Toast.makeText(this, "Cannot Submit Empty Fields", Toast.LENGTH_SHORT).show();
-                } else {
-
-
-                    try {
-                        // Insert Data
-                        db.insertData(name);
-
-                        // Clear the fields
-                        editTextID.getText().clear();
-                        editTextName.getText().clear();
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
+        readBtn.setOnClickListener((v) -> {
+            String title = nameEdit.getText().toString();
+            if (title.isEmpty()) {
+                Toast.makeText(this, "Empty title", Toast.LENGTH_SHORT).show();
+            } else {
+                try {
+                    Topic topic = dao.select(title);
+                    if (topic != null) {
+                        descEdit.setText(topic.getDescription());
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+            }
+        });
 
+        insertBtn.setOnClickListener((v) -> {
 
+            String title = nameEdit.getText().toString();
+            String desc = descEdit.getText().toString();
+            if (title.isEmpty() || desc.isEmpty()) {
+                Toast.makeText(this, "Cannot Submit Empty Fields", Toast.LENGTH_SHORT).show();
+            } else {
+                Topic topic = new Topic(title, desc);
+                nameEdit.getText().clear();
+                descEdit.getText().clear();
+                try {
+                    dao.insert(topic);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         });
 
 
-
-        buttonUpdate.setOnClickListener(v ->{
-
-                name = editTextName.getText().toString();
-                ID = editTextID.getText().toString();
-
-                if (name.isEmpty()|| ID.isEmpty()) {
-
-                    Toast.makeText(this, "Cannot Submit Empty Fields", Toast.LENGTH_SHORT).show();
-                } else {
-
-
-                    try {
-                        // Update Data
-                        db.updateData(ID, name);
-
-                        // Clear the fields
-                        editTextID.getText().clear();
-                        editTextName.getText().clear();
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+        updateBtn.setOnClickListener(v -> {
+            String title = nameEdit.getText().toString();
+            String desc = descEdit.getText().toString();
+            if (title.isEmpty() || desc.isEmpty()) {
+                Toast.makeText(this, "Cannot Submit Empty Fields", Toast.LENGTH_SHORT).show();
+            } else {
+                Topic topic = new Topic(title, desc);
+                nameEdit.getText().clear();
+                descEdit.getText().clear();
+                try {
+                    dao.update(topic);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            });
-
-        buttonDelete.setOnClickListener((v) -> {
-
-                ID = editTextID.getText().toString();
-
-                if (ID.isEmpty()) {
-
-                    Toast.makeText(this, "Please enter the ID", Toast.LENGTH_SHORT).show();
-                } else {
-
-                    try {
-                        // Delete Data
-                        db.deleteData(ID);
-
-                        // Clear the fields
-                        editTextID.getText().clear();
-                        editTextName.getText().clear();
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-
-
+            }
         });
 
-        buttonDeleteAll.setOnClickListener((v) -> {
+        deleteBtn.setOnClickListener((v) -> {
+            String title = nameEdit.getText().toString();
+            if (title.isEmpty()) {
+                Toast.makeText(this, "Need title", Toast.LENGTH_SHORT).show();
+            } else {
+                nameEdit.getText().clear();
+                descEdit.getText().clear();
+                try {
+                    dao.delete(title);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
-                // Delete all data
-                // simply delete all the data by calling this method --> db.deleteAllData();
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-                builder.setTitle("Delete All Data");
-                builder.setCancelable(false);
-                builder.setMessage("Do you really need to delete your all data ?");
-                builder.setPositiveButton("Yes", (dialog, which) -> {
-
-                    // User confirmed , now you can delete the data
-                    db.deleteAllData();
-
-                    // Clear the fields
-                    editTextID.getText().clear();
-                    editTextName.getText().clear();
-                });
-                builder.setNegativeButton("No", (dialog, which) -> {
-
-                    // user not confirmed
-                    dialog.cancel();
-                });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
-
+        clearBtn.setOnClickListener((v) -> {
+            try {
+                dao.clear();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 
     }
